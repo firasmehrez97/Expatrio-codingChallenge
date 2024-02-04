@@ -6,6 +6,7 @@ import 'package:coding_challenge/shared/utils/extensions/theme_data_extension.da
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
+// A StatefulWidget to display a modal sheet for tax information entry.
 class TaxModalSheet extends StatefulWidget {
   final TaxModel taxmodel;
 
@@ -23,12 +24,15 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
   bool _isChecked = false;
   bool checkboxError = false;
 
+  // A list to hold filtered countries for dropdown selection.
   List<String> filteredContries = List.empty(growable: true);
 
+  // Converts country constants to a list of strings for dropdown items.
   List<String> countryItem = CountriesConstants.nationality
       .map((country) => country['label'] as String)
       .toList();
 
+  // Filters countries based on primary and secondary tax residencies to avoid duplicates.
   List<String> getFilteredCountries() {
     // Create a set of excluded country names for efficient lookup
     List<String?>? excludedCountryNames = widget.taxmodel.secondaryTaxResidence
@@ -53,6 +57,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
   void initState() {
     super.initState();
 
+    // Initializes secondary and primary tax residencies if they are null.
     widget.taxmodel.secondaryTaxResidence ??=
         List<TaxResidence>.empty(growable: true);
     widget.taxmodel.primaryTaxResidence ??= TaxResidence(country: '', id: '');
@@ -60,10 +65,12 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
 
   @override
   Widget build(BuildContext context) {
+    // Updates filtered countries each time the widget builds.
     filteredContries = getFilteredCountries();
     return Form(
-      key: _formKey,
+      key: _formKey, // Associates the form key with the Form widget.
       child: Builder(builder: (context) {
+        // Builder used to create UI based on the state of secondary tax residences.
         if (widget.taxmodel.secondaryTaxResidence?.isEmpty == true) {
           return Column(
             children: [
@@ -260,6 +267,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     );
   }
 
+  // Builds the UI section for the primary tax residency form.
   Widget _buildPrimaryTaxForm() {
     InputDecoration inputDecoration = const InputDecoration(
       contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
@@ -378,6 +386,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     );
   }
 
+  // Builds the UI section for secondary tax residencies including dynamic addition.
   Widget _buildSecondaryTaxForm(
       BuildContext context, int index, Function removEntry) {
     return Column(
@@ -494,6 +503,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     );
   }
 
+  // Adds a new entry for secondary tax residence.
   void addNewEntry() {
     setState(() {
       widget.taxmodel.secondaryTaxResidence
@@ -501,6 +511,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     });
   }
 
+// Removes an entry for secondary tax residence.
   void removeEntry(int index) {
     setState(() {
       if (widget.taxmodel.secondaryTaxResidence?.isNotEmpty == true) {
@@ -509,6 +520,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     });
   }
 
+// Handles the save button click event.
   Future<void> onSaveButtonClick() async {
     if (!_isChecked) {
       setState(() {
