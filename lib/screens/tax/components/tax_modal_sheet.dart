@@ -383,16 +383,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 5, vertical: 5),
                       ),
-                      onPressed: () async {
-                        if (_isChecked == false) {
-                          setState(() {
-                            checkboxError = true;
-                          });
-                        } else if (_formKey.currentState!.validate()) {
-                          await TaxService.updateData(widget.taxmodel);
-                          Navigator.pop(context);
-                        }
-                      },
+                      onPressed: () => onSaveButtonClick(),
                       child: Container(
                         height: 24,
                         width: 250,
@@ -492,18 +483,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
                                   backgroundColor:
                                       Theme.of(context).colors.primary,
                                 ),
-                                onPressed: () async {
-                                  if (_isChecked == false) {
-                                    setState(() {
-                                      checkboxError = true;
-                                    });
-                                  } else if (_formKey.currentState!
-                                      .validate()) {
-                                    await TaxService.updateData(
-                                        widget.taxmodel);
-                                    Navigator.pop(context);
-                                  }
-                                },
+                                onPressed: () => onSaveButtonClick(),
                                 child: Container(
                                   height: 24,
                                   width: 250,
@@ -527,5 +507,15 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
         }
       }),
     );
+  }
+
+  Future<void> onSaveButtonClick() async {
+    if (!_isChecked) {
+      setState(() {
+        checkboxError = true;
+      });
+    } else if (_formKey.currentState!.validate()) {
+      await TaxService.updateData(widget.taxmodel, context);
+    }
   }
 }
