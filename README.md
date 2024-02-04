@@ -26,6 +26,8 @@ This code challenge app simplifies tax residency management with an intuitive lo
 
 - **Dropdown Search (v5.0.6)**: Implements customizable dropdown search widgets, improving user experience by making data selection more intuitive.
 
+- **Mockito (v5.0.0)**: A versatile mocking framework for Dart and Flutter, designed to streamline the creation of mock objects in unit tests. Mockito enables precise control over external dependencies within tests, allowing for behavior verification, stubbing of method results, and argument matching.
+
 ## Project Structure
 
 ```
@@ -63,5 +65,10 @@ then run those commands:
     ```bash
     flutter run
     ```
+
+## Future Improvements
+1. Create more tests
+2. Localization
+3. Integration of firebase / ShoreBird etc ...
 
 #### Thank you
