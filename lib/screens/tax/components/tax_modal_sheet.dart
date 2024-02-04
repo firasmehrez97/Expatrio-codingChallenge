@@ -1,4 +1,5 @@
 import 'package:coding_challenge/screens/tax/model/tax_country.dart';
+import 'package:coding_challenge/screens/tax/services/tax_service.dart';
 import 'package:coding_challenge/shared/countries_constants.dart';
 import 'package:coding_challenge/shared/decorations/input_decoration.dart';
 import 'package:coding_challenge/shared/utils/extensions/theme_data_extension.dart';
@@ -50,10 +51,8 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    //AFTER FETCH
     widget.taxmodel.secondaryTaxResidence ??=
         List<TaxResidence>.empty(growable: true);
     widget.taxmodel.primaryTaxResidence ??= TaxResidence(country: '', id: '');
@@ -95,7 +94,8 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
           ),
           onChanged: (value) {
             setState(() {
-              widget.taxmodel.primaryTaxResidence?.country = value ?? '';
+              widget.taxmodel.primaryTaxResidence?.country =
+                  CountriesConstants.getCodeByLabel(value ?? '');
             });
           },
           autoValidateMode: AutovalidateMode.always,
@@ -196,7 +196,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
           onChanged: (value) {
             setState(() {
               widget.taxmodel.secondaryTaxResidence?[index].country =
-                  value ?? countryItem[0];
+                  CountriesConstants.getCodeByLabel(value ?? countryItem[0]);
             });
           },
           autoValidateMode: AutovalidateMode.always,
@@ -388,7 +388,10 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
                           setState(() {
                             checkboxError = true;
                           });
-                        } else if (_formKey.currentState!.validate()) {}
+                        } else if (_formKey.currentState!.validate()) {
+                          await TaxService.updateData(widget.taxmodel);
+                          Navigator.pop(context);
+                        }
                       },
                       child: Container(
                         height: 24,
@@ -495,7 +498,11 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
                                       checkboxError = true;
                                     });
                                   } else if (_formKey.currentState!
-                                      .validate()) {}
+                                      .validate()) {
+                                    await TaxService.updateData(
+                                        widget.taxmodel);
+                                    Navigator.pop(context);
+                                  }
                                 },
                                 child: Container(
                                   height: 24,
