@@ -28,6 +28,13 @@ This code challenge app simplifies tax residency management with an intuitive lo
 
 ## Project Structure
 
+```
+lib/
+|- shared/
+|- screens/
+|- main.dart
+```
+
 ## Getting Started
 
 To run the project locally you need 
