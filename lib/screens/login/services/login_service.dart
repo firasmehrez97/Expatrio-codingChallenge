@@ -3,6 +3,7 @@ import 'package:coding_challenge/screens/tax/tax_screen.dart';
 import 'package:coding_challenge/shared/utils/extensions/theme_data_extension.dart';
 import 'package:coding_challenge/shared/widgets/bottom_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -15,6 +16,7 @@ class LoginService {
         content: Text(
       "Trying to login...",
     )));
+    const storage = FlutterSecureStorage();
 
     try {
       final requestBodydata = {"email": email, "password": password};
@@ -32,6 +34,15 @@ class LoginService {
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
           _showSuccessfulBottomSheet(context);
         }
+
+        await storage.write(
+          key: "accessToken",
+          value: requestResponseBody['accessToken'],
+        );
+        await storage.write(
+          key: "userId",
+          value: requestResponseBody['userId'].toString(),
+        );
         return true;
       } else {
         if (context.mounted) {
@@ -74,6 +85,11 @@ class LoginService {
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   ),
                   onPressed: () async {
                     Navigator.pop(context);
@@ -126,6 +142,11 @@ class LoginService {
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   ),
                   onPressed: () async {
                     Navigator.pop(context);

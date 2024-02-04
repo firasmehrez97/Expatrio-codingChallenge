@@ -1,4 +1,5 @@
 import 'package:coding_challenge/screens/login/services/login_service.dart';
+import 'package:coding_challenge/shared/decorations/input_decoration.dart';
 import 'package:coding_challenge/shared/utils/extensions/theme_data_extension.dart';
 import 'package:coding_challenge/shared/validators/validators.dart';
 import 'package:flutter/material.dart';
@@ -27,26 +28,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-
-    InputDecoration emailInputDecoration = const InputDecoration(
-      contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-    );
+    final formKey = GlobalKey<FormState>();
 
     InputDecoration passwordInputDecoration = InputDecoration(
       contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
@@ -81,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
     return Padding(
       padding: const EdgeInsets.all(48),
       child: Form(
-        key: _formKey,
+        key: formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -155,7 +137,7 @@ class _LoginFormState extends State<LoginForm> {
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                 ),
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
+                  if (formKey.currentState!.validate()) {
                     await _loginService.login(_emailController.text,
                         _passwordController.text, context);
                   }
