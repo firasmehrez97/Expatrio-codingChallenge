@@ -1,20 +1,60 @@
-# coding_challenge
-This is the expatrio home assignment for the mobile post
+# Expatrio Coding Challenge
 
-## credentials for access 
-- email : tito+bs792@expatrio.com
-- password : nemampojma
+This code challenge app simplifies tax residency management with an intuitive login, a clear tax data updates, and an easy-to-use bottom sheet for information input and editing.
+## Screenshots
+
+<img src="screenhots/01.png" width=250 /> <img src="screenhots/02.png" width=250 />
+<img src="screenhots/03.png" width=250 /> <img src="screenhots/04.png" width=250 />
+<img src="screenhots/05.png" width=250 /> <img src="screenhots/06.png" width=250 />
+<img src="screenhots/07.png" width=250 /> <img src="screenhots/08.png" width=250 />
+
+## Libraries & Technology
+
+- **Flutter SDK**: The core framework for building the app, enabling cross-platform development for iOS and Android from a single codebase.
+
+- **Lottie** (v2.4.0): Used for integrating high-quality animations into the app, enhancing the visual appeal without the overhead of large video files.
+
+- **URL Launcher**: Allows the app to open web URLs, including web pages, mail, SMS, or phone calls, providing a seamless interaction with external resources.
+
+- **JSON Serializable (v6.1.6)**: Automates the process of serializing the complex objects into JSON format and vice versa, simplifying data manipulation and storage.
+
+- **HTTP (v0.13.0)**: Facilitates communication with web servers, enabling the app to fetch data from or post data to the internet, essential for RESTful API interactions.
+
+- **Flutter Secure Storage (v5.1.2)**: Offers a secure way to store sensitive information in the keychain of iOS and the keystore of Android, enhancing data security.
+
+- **Flutter SVG (v2.0.9)**: Provides support for rendering SVG images, allowing for scalable graphics that look sharp across all screen resolutions.
+
+- **Dropdown Search (v5.0.6)**: Implements customizable dropdown search widgets, improving user experience by making data selection more intuitive.
+
+## Project Structure
 
 ## Getting Started
-A postman collection is available along with a video showing the flow and an apk in case you want to test it yourself
-Credentials are already setup in postman and all you have to do is click send on the auth api 
-token will be copied directly to collection variables and you can play around with the other apis
-![image](https://github.com/gogetsu4024/expatrioCodingChallenge/assets/42039041/6fa5fb12-e706-4696-8cd4-69884021ed6d)
 
-link is here -> [click ](https://drive.google.com/drive/folders/1MuyOdR152tvVVctcRwouRiXZAbG9XM5K)    :shipit:
+To run the project locally you need 
+1. Flutter SDK
+2. Android Studio or xcode 
+3. Android emulator or IOS emulator
+then run those commands: 
 
-![image](https://github.com/gogetsu4024/expatrioCodingChallenge/assets/42039041/c2d568e3-4068-4099-8e86-ed5a84992cc3)
+1. Clone repository
 
+    ```bash
+    git clone git@github.com:firasmehrez97/Expatrio-codingChallenge.git
 
-####  GOOD LUCK
-:blush:
+    ```
+
+2. Navigate to the project.
+
+    ```bash
+    cd Expatrio_codingChallenge
+    ```
+
+3. Start emulator.
+
+3. Run.
+
+    ```bash
+    flutter run
+    ```
+
+#### GOOD LUCK
