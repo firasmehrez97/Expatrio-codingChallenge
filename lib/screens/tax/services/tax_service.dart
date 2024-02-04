@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:coding_challenge/shared/utils/extensions/theme_data_extension.dart';
+import 'package:coding_challenge/shared/widgets/bottom_modal.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:coding_challenge/screens/tax/model/tax_country.dart';
@@ -34,8 +37,7 @@ class TaxService {
   }
 
   static Future<void> updateData(
-    TaxModel taxModel,
-  ) async {
+      TaxModel taxModel, BuildContext context) async {
     var clientId = await storage.read(key: "userId");
     String? accessToken = await storage.read(key: "accessToken");
     try {
@@ -49,7 +51,115 @@ class TaxService {
       );
 
       if (response.statusCode == 200) {
-      } else {}
+        if (!context.mounted) return;
+        _showSuccessfulBottomSheet(context);
+      } else {
+        if (context.mounted) {
+          _showErrorBottomSheet(context, response.body);
+        }
+      }
     } on SocketException {}
   }
+}
+
+void _showSuccessfulBottomSheet(BuildContext context) {
+  ButtomModal(
+      context: context,
+      heightFactor: 0.4,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.check_circle,
+              color: Theme.of(context).colors.primary,
+              size: 80,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Tax data updated successfully',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            const SizedBox(height: 16),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colors.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                ),
+                onPressed: () async {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  height: 24,
+                  width: 250,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colors.primary,
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
+                  ),
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                )),
+          ],
+        ),
+      ));
+}
+
+void _showErrorBottomSheet(BuildContext context, String errorMessage) {
+  ButtomModal(
+      context: context,
+      heightFactor: 0.4,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 80,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Login failure',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Text(errorMessage),
+            const SizedBox(height: 16),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colors.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                ),
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  height: 24,
+                  width: 250,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colors.primary,
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
+                  ),
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                )),
+          ],
+        ),
+      ));
 }
