@@ -16,7 +16,7 @@ TaxModel _$TaxModelFromJson(Map<String, dynamic> json) => TaxModel(
       secondaryTaxResidence: (json['secondaryTaxResidence'] as List<dynamic>?)
           ?.map((e) => TaxResidence.fromJson(e as Map<String, dynamic>))
           .toList(),
-      w9FileId: json['w9FileId'] as String?,
+      w9FileId: json['w9FileId'] as int?,
     );
 
 Map<String, dynamic> _$TaxModelToJson(TaxModel instance) => <String, dynamic>{

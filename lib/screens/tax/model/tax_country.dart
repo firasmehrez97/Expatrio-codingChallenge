@@ -17,7 +17,7 @@ class TaxModel {
   List<TaxResidence>? secondaryTaxResidence;
 
   @JsonKey(defaultValue: null)
-  String? w9FileId;
+  int? w9FileId;
 
   TaxModel({
     this.primaryTaxResidence,

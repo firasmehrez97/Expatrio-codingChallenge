@@ -1,11 +1,17 @@
 import 'package:coding_challenge/screens/tax/model/tax_country.dart';
 import 'package:coding_challenge/shared/countries_constants.dart';
+import 'package:coding_challenge/shared/decorations/input_decoration.dart';
 import 'package:coding_challenge/shared/utils/extensions/theme_data_extension.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 class TaxModalSheet extends StatefulWidget {
-  const TaxModalSheet({super.key});
+  final TaxModel taxmodel;
+
+  const TaxModalSheet({
+    Key? key,
+    required this.taxmodel,
+  }) : super(key: key);
 
   @override
   State<TaxModalSheet> createState() => _TaxModalSheetState();
@@ -16,7 +22,6 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
   bool _isChecked = false;
   bool checkboxError = false;
 
-  TaxModel taxModel = TaxModel(usPerson: false);
   List<String> filteredContries = List.empty(growable: true);
 
   List<String> countryItem = CountriesConstants.nationality
@@ -25,8 +30,9 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
 
   List<String> getFilteredCountries() {
     // Create a set of excluded country names for efficient lookup
-    List<String?>? excludedCountryNames =
-        taxModel.secondaryTaxResidence?.map((e) => e.country).toList();
+    List<String?>? excludedCountryNames = widget.taxmodel.secondaryTaxResidence
+        ?.map((e) => CountriesConstants.getLabelByCode(e.country))
+        .toList();
 
     // Filter out countries that are in the excludedCountryNames set
     if (excludedCountryNames == null) {
@@ -34,7 +40,10 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     } else {
       return countryItem
           .where((country) => !excludedCountryNames.contains(country))
-          .where((country) => taxModel.primaryTaxResidence?.country != country)
+          .where((country) =>
+              CountriesConstants.getLabelByCode(
+                  widget.taxmodel.primaryTaxResidence!.country) !=
+              country)
           .toList();
     }
   }
@@ -45,8 +54,9 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     super.initState();
 
     //AFTER FETCH
-    taxModel.secondaryTaxResidence ??= List<TaxResidence>.empty(growable: true);
-    taxModel.primaryTaxResidence ??= TaxResidence(country: '', id: '');
+    widget.taxmodel.secondaryTaxResidence ??=
+        List<TaxResidence>.empty(growable: true);
+    widget.taxmodel.primaryTaxResidence ??= TaxResidence(country: '', id: '');
   }
 
   Widget _buildPrimaryTaxForm() {
@@ -85,7 +95,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
           ),
           onChanged: (value) {
             setState(() {
-              taxModel.primaryTaxResidence?.country = value ?? '';
+              widget.taxmodel.primaryTaxResidence?.country = value ?? '';
             });
           },
           autoValidateMode: AutovalidateMode.always,
@@ -95,9 +105,10 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
             }
             return null;
           },
-          selectedItem: (taxModel.primaryTaxResidence?.country != '' &&
-                  taxModel.primaryTaxResidence?.country != null)
-              ? taxModel.primaryTaxResidence!.country
+          selectedItem: (widget.taxmodel.primaryTaxResidence?.country != '' &&
+                  widget.taxmodel.primaryTaxResidence?.country != null)
+              ? CountriesConstants.getLabelByCode(
+                  widget.taxmodel.primaryTaxResidence!.country)
               : null,
           popupProps: PopupProps.modalBottomSheet(
               showSearchBox: true,
@@ -149,14 +160,14 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
         const SizedBox(height: 4),
         TextFormField(
           textAlignVertical: TextAlignVertical.center,
-          initialValue: 'Tax ID or N/A',
+          initialValue: widget.taxmodel.primaryTaxResidence?.id ?? "N/A",
           style: const TextStyle(fontSize: 16),
           textInputAction: TextInputAction.done,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: inputDecoration,
           onChanged: (taxId) {
             setState(() {
-              taxModel.primaryTaxResidence?.id = taxId;
+              widget.taxmodel.primaryTaxResidence?.id = taxId;
             });
           },
         ),
@@ -167,24 +178,6 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
 
   Widget _buildSecondaryTaxForm(
       BuildContext context, int index, Function removEntry) {
-    InputDecoration inputDecoration = const InputDecoration(
-      contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-    );
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +195,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
           ),
           onChanged: (value) {
             setState(() {
-              taxModel.secondaryTaxResidence?[index].country =
+              widget.taxmodel.secondaryTaxResidence?[index].country =
                   value ?? countryItem[0];
             });
           },
@@ -213,10 +206,13 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
             }
             return null;
           },
-          selectedItem: (taxModel.secondaryTaxResidence?[index].country != '' ||
-                  taxModel.secondaryTaxResidence?[index].country != null)
-              ? taxModel.secondaryTaxResidence![index].country
-              : null,
+          selectedItem:
+              (widget.taxmodel.secondaryTaxResidence?[index].country != '' ||
+                      widget.taxmodel.secondaryTaxResidence?[index].country !=
+                          null)
+                  ? CountriesConstants.getLabelByCode(
+                      widget.taxmodel.secondaryTaxResidence![index].country)
+                  : null,
           popupProps: PopupProps.modalBottomSheet(
               showSearchBox: true,
               modalBottomSheetProps: const ModalBottomSheetProps(
@@ -267,14 +263,14 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
         const SizedBox(height: 4),
         TextFormField(
           textAlignVertical: TextAlignVertical.center,
-          initialValue: 'Tax ID or N/A',
+          initialValue: widget.taxmodel.secondaryTaxResidence![index].id,
           style: const TextStyle(fontSize: 16),
           textInputAction: TextInputAction.done,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: inputDecoration,
           onChanged: (taxId) {
             setState(() {
-              taxModel.secondaryTaxResidence?[index].id = taxId;
+              widget.taxmodel.secondaryTaxResidence?[index].id = taxId;
             });
           },
         ),
@@ -298,14 +294,15 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
 
   void addNewEntry() {
     setState(() {
-      taxModel.secondaryTaxResidence?.add(TaxResidence(country: '', id: ''));
+      widget.taxmodel.secondaryTaxResidence
+          ?.add(TaxResidence(country: '', id: ''));
     });
   }
 
   void removeEntry(int index) {
     setState(() {
-      if (taxModel.secondaryTaxResidence?.isNotEmpty == true) {
-        taxModel.secondaryTaxResidence?.removeAt(index);
+      if (widget.taxmodel.secondaryTaxResidence?.isNotEmpty == true) {
+        widget.taxmodel.secondaryTaxResidence?.removeAt(index);
       }
     });
   }
@@ -316,7 +313,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     return Form(
       key: _formKey,
       child: Builder(builder: (context) {
-        if (taxModel.secondaryTaxResidence?.isEmpty == true) {
+        if (widget.taxmodel.secondaryTaxResidence?.isEmpty == true) {
           return Column(
             children: [
               const Padding(
@@ -380,6 +377,11 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 5),
                       ),
                       onPressed: () async {
                         if (_isChecked == false) {
@@ -409,7 +411,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
         } else {
           return ListView.builder(
               shrinkWrap: true,
-              itemCount: taxModel.secondaryTaxResidence?.length,
+              itemCount: widget.taxmodel.secondaryTaxResidence?.length,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [
@@ -428,8 +430,9 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
                       height: 5,
                     ),
                     _buildSecondaryTaxForm(this.context, index, removeEntry),
-                    if (taxModel.secondaryTaxResidence != null)
-                      if (index == (taxModel.secondaryTaxResidence!.length - 1))
+                    if (widget.taxmodel.secondaryTaxResidence != null)
+                      if (index ==
+                          (widget.taxmodel.secondaryTaxResidence!.length - 1))
                         Column(
                           children: [
                             InkWell(

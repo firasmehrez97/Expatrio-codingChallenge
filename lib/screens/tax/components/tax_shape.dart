@@ -1,4 +1,6 @@
 import 'package:coding_challenge/screens/tax/components/tax_modal_sheet.dart';
+import 'package:coding_challenge/screens/tax/model/tax_country.dart';
+import 'package:coding_challenge/screens/tax/services/tax_service.dart';
 import 'package:coding_challenge/shared/utils/extensions/theme_data_extension.dart';
 import 'package:coding_challenge/shared/widgets/bottom_modal.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +59,8 @@ class _TaxShapeState extends State<TaxShape> {
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                 ),
                 onPressed: () async {
-                  _showTaxDataInoutFields(context);
+                  var taxModel = await TaxService.getTaxData();
+                  _showTaxDataInoutFields(context, taxModel!);
                 },
                 child: Container(
                   height: 32,
@@ -79,10 +82,12 @@ class _TaxShapeState extends State<TaxShape> {
     );
   }
 
-  void _showTaxDataInoutFields(BuildContext context) {
+  void _showTaxDataInoutFields(BuildContext context, TaxModel taxModel) {
     ButtomModal(
       context: context,
-      child: const TaxModalSheet(),
+      child: TaxModalSheet(
+        taxmodel: taxModel,
+      ),
     );
   }
 }
