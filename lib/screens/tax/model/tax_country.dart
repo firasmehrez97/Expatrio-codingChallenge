@@ -1,5 +1,5 @@
+// ignore: depend_on_referenced_packages
 import 'package:json_annotation/json_annotation.dart';
-
 part 'tax_country.g.dart';
 
 @JsonSerializable()
@@ -27,7 +27,6 @@ class TaxModel {
     this.w9FileId,
   });
 
-
   @override
   String toString() {
     return 'TaxModel{primaryTaxResidence: $primaryTaxResidence, usPerson: $usPerson, usTaxId: $usTaxId, secondaryTaxResidence: $secondaryTaxResidence, w9FileId: $w9FileId}';
@@ -48,7 +47,6 @@ class TaxResidence {
     required this.country,
     required this.id,
   });
-
 
   @override
   String toString() {

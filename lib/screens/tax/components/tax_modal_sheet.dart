@@ -208,8 +208,6 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
           },
           autoValidateMode: AutovalidateMode.always,
           validator: (item) {
-            print("item");
-            print(item);
             if (item == null || item == '') {
               return 'Please choose a country';
             }
@@ -315,8 +313,6 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
   @override
   Widget build(BuildContext context) {
     filteredContries = getFilteredCountries();
-    print("taxModel");
-    print(taxModel);
     return Form(
       key: _formKey,
       child: Builder(builder: (context) {
@@ -390,10 +386,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
                           setState(() {
                             checkboxError = true;
                           });
-                        } else if (_formKey.currentState!.validate()) {
-                          print("entries");
-                          print(taxModel.secondaryTaxResidence?.toList());
-                        }
+                        } else if (_formKey.currentState!.validate()) {}
                       },
                       child: Container(
                         height: 24,
@@ -499,11 +492,7 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
                                       checkboxError = true;
                                     });
                                   } else if (_formKey.currentState!
-                                      .validate()) {
-                                    print("entries");
-                                    print(taxModel.secondaryTaxResidence
-                                        ?.toList());
-                                  }
+                                      .validate()) {}
                                 },
                                 child: Container(
                                   height: 24,

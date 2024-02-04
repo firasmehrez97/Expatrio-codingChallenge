@@ -156,18 +156,9 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // If the form is valid, proceed with the button's action
-                    // For example, form submission or navigation
-                    print("Form is valid! Proceeding with the action...");
                     await _loginService.login(_emailController.text,
                         _passwordController.text, context);
-                  } else {
-                    // If the form is invalid, button action is essentially disabled
-                    // Here, you might show a message or handle the error
-                    print("Form is not valid! Cannot proceed.");
                   }
-
-                  //_showSuccessful();
                 },
                 child: Container(
                   height: 32,
