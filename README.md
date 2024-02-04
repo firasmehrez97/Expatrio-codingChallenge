@@ -3,10 +3,10 @@
 This code challenge app simplifies tax residency management with an intuitive login, a clear tax data updates, and an easy-to-use bottom sheet for information input and editing.
 ## Screenshots
 
-<img src="screenhots/01.png" width=250 /> <img src="screenhots/02.png" width=250 />
-<img src="screenhots/03.png" width=250 /> <img src="screenhots/04.png" width=250 />
-<img src="screenhots/05.png" width=250 /> <img src="screenhots/06.png" width=250 />
-<img src="screenhots/07.png" width=250 /> <img src="screenhots/08.png" width=250 />
+<img src="screenshots/01.png" width=250 /> <img src="screenshots/02.png" width=250 />
+<img src="screenshots/03.png" width=250 /> <img src="screenshots/04.png" width=250 />
+<img src="screenshots/05.png" width=250 /> <img src="screenshots/06.png" width=250 />
+<img src="screenshots/07.png" width=250 /> <img src="screenshots/08.png" width=250 />
 
 ## Libraries & Technology
 
@@ -57,4 +57,4 @@ then run those commands:
     flutter run
     ```
 
-#### GOOD LUCK
+#### Thank you
