@@ -1468,4 +1468,12 @@ class CountriesConstants {
     // Return the label
     return country["label"].toString();
   }
+
+  static String getCodeByLabel(String countryLabel) {
+    var country = nationality.firstWhere(
+      (country) => country["label"]! == countryLabel,
+      orElse: () => {"code": "Code not found"},
+    );
+    return country["code"].toString();
+  }
 }
