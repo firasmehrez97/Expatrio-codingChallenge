@@ -58,6 +58,208 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
     widget.taxmodel.primaryTaxResidence ??= TaxResidence(country: '', id: '');
   }
 
+  @override
+  Widget build(BuildContext context) {
+    filteredContries = getFilteredCountries();
+    return Form(
+      key: _formKey,
+      child: Builder(builder: (context) {
+        if (widget.taxmodel.secondaryTaxResidence?.isEmpty == true) {
+          return Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Text(
+                  'Declaration of financial information',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              _buildPrimaryTaxForm(),
+              Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      addNewEntry();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.add,
+                            color: Theme.of(context).colors.primary),
+                        const SizedBox(width: 4),
+                        Text(
+                          'ADD ANOTHER',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).colors.primary),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        activeColor: Theme.of(context).colors.primary,
+                        side: BorderSide(
+                            width: 2,
+                            color: checkboxError
+                                ? Colors.red
+                                : const Color.fromRGBO(65, 171, 158, 1)),
+                        value: _isChecked,
+                        onChanged: (bool? isChecked) {
+                          setState(() {
+                            _isChecked = isChecked!;
+                          });
+                        },
+                      ),
+                      const SizedBox(width: 2),
+                      const Text(
+                        'I confirm above tax residency .',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 5),
+                      ),
+                      onPressed: () => onSaveButtonClick(),
+                      child: Container(
+                        height: 24,
+                        width: 250,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colors.primary,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(100)),
+                        ),
+                        child: const Text(
+                          'Save',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      )),
+                ],
+              )
+            ],
+          );
+        } else {
+          return ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.taxmodel.secondaryTaxResidence?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    if (index == 0)
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 10.0),
+                        child: Text(
+                          'Declaration of financial information',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    if (index == 0) _buildPrimaryTaxForm(),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    _buildSecondaryTaxForm(this.context, index, removeEntry),
+                    if (widget.taxmodel.secondaryTaxResidence != null)
+                      if (index ==
+                          (widget.taxmodel.secondaryTaxResidence!.length - 1))
+                        Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                addNewEntry();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.add,
+                                      color: Theme.of(context).colors.primary),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'ADD ANOTHER',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color:
+                                            Theme.of(context).colors.primary),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  checkColor: Colors.white,
+                                  activeColor: Theme.of(context).colors.primary,
+                                  side: BorderSide(
+                                      width: 2,
+                                      color: checkboxError
+                                          ? Colors.red
+                                          : const Color.fromRGBO(
+                                              65, 171, 158, 1)),
+                                  value: _isChecked,
+                                  onChanged: (bool? isChecked) {
+                                    setState(() {
+                                      _isChecked = isChecked!;
+                                    });
+                                  },
+                                ),
+                                const SizedBox(width: 2),
+                                const Text(
+                                  'I confirm above tax residency .',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colors.primary,
+                                ),
+                                onPressed: () => onSaveButtonClick(),
+                                child: Container(
+                                  height: 24,
+                                  width: 250,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colors.primary,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(100)),
+                                  ),
+                                  child: const Text(
+                                    'Save',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                )),
+                          ],
+                        )
+                  ],
+                );
+              });
+        }
+      }),
+    );
+  }
+
   Widget _buildPrimaryTaxForm() {
     InputDecoration inputDecoration = const InputDecoration(
       contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
@@ -305,208 +507,6 @@ class _TaxModalSheetState extends State<TaxModalSheet> {
         widget.taxmodel.secondaryTaxResidence?.removeAt(index);
       }
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    filteredContries = getFilteredCountries();
-    return Form(
-      key: _formKey,
-      child: Builder(builder: (context) {
-        if (widget.taxmodel.secondaryTaxResidence?.isEmpty == true) {
-          return Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  'Declaration of financial information',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              _buildPrimaryTaxForm(),
-              Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      addNewEntry();
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.add,
-                            color: Theme.of(context).colors.primary),
-                        const SizedBox(width: 4),
-                        Text(
-                          'ADD ANOTHER',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Theme.of(context).colors.primary),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Checkbox(
-                        checkColor: Colors.white,
-                        activeColor: Theme.of(context).colors.primary,
-                        side: BorderSide(
-                            width: 2,
-                            color: checkboxError
-                                ? Colors.red
-                                : const Color.fromRGBO(65, 171, 158, 1)),
-                        value: _isChecked,
-                        onChanged: (bool? isChecked) {
-                          setState(() {
-                            _isChecked = isChecked!;
-                          });
-                        },
-                      ),
-                      const SizedBox(width: 2),
-                      const Text(
-                        'I confirm above tax residency .',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colors.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5, vertical: 5),
-                      ),
-                      onPressed: () => onSaveButtonClick(),
-                      child: Container(
-                        height: 24,
-                        width: 250,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colors.primary,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(100)),
-                        ),
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      )),
-                ],
-              )
-            ],
-          );
-        } else {
-          return ListView.builder(
-              shrinkWrap: true,
-              itemCount: widget.taxmodel.secondaryTaxResidence?.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    if (index == 0)
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 10.0),
-                        child: Text(
-                          'Declaration of financial information',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    if (index == 0) _buildPrimaryTaxForm(),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    _buildSecondaryTaxForm(this.context, index, removeEntry),
-                    if (widget.taxmodel.secondaryTaxResidence != null)
-                      if (index ==
-                          (widget.taxmodel.secondaryTaxResidence!.length - 1))
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                addNewEntry();
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(Icons.add,
-                                      color: Theme.of(context).colors.primary),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'ADD ANOTHER',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color:
-                                            Theme.of(context).colors.primary),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Theme.of(context).colors.primary,
-                                  side: BorderSide(
-                                      width: 2,
-                                      color: checkboxError
-                                          ? Colors.red
-                                          : const Color.fromRGBO(
-                                              65, 171, 158, 1)),
-                                  value: _isChecked,
-                                  onChanged: (bool? isChecked) {
-                                    setState(() {
-                                      _isChecked = isChecked!;
-                                    });
-                                  },
-                                ),
-                                const SizedBox(width: 2),
-                                const Text(
-                                  'I confirm above tax residency .',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colors.primary,
-                                ),
-                                onPressed: () => onSaveButtonClick(),
-                                child: Container(
-                                  height: 24,
-                                  width: 250,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).colors.primary,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(100)),
-                                  ),
-                                  child: const Text(
-                                    'Save',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
-                                )),
-                          ],
-                        )
-                  ],
-                );
-              });
-        }
-      }),
-    );
   }
 
   Future<void> onSaveButtonClick() async {
