@@ -60,7 +60,9 @@ class _TaxShapeState extends State<TaxShape> {
                 ),
                 onPressed: () async {
                   var taxModel = await TaxService.getTaxData();
-                  _showTaxDataInoutFields(context, taxModel!);
+                  if (context.mounted) {
+                    _showTaxDataInoutFields(context, taxModel!);
+                  }
                 },
                 child: Container(
                   height: 32,
