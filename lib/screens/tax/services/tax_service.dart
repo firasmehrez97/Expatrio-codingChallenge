@@ -5,7 +5,7 @@ import 'package:coding_challenge/shared/widgets/bottom_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:coding_challenge/screens/tax/model/tax_country.dart';
+import 'package:coding_challenge/screens/tax/models/tax_country.dart';
 import 'package:flutter/foundation.dart';
 
 class TaxService {

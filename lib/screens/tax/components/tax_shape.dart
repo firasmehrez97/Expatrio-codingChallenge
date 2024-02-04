@@ -1,5 +1,5 @@
 import 'package:coding_challenge/screens/tax/components/tax_modal_sheet.dart';
-import 'package:coding_challenge/screens/tax/model/tax_country.dart';
+import 'package:coding_challenge/screens/tax/models/tax_country.dart';
 import 'package:coding_challenge/screens/tax/services/tax_service.dart';
 import 'package:coding_challenge/shared/utils/extensions/theme_data_extension.dart';
 import 'package:coding_challenge/shared/widgets/bottom_modal.dart';

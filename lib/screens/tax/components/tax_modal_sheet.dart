@@ -1,4 +1,4 @@
-import 'package:coding_challenge/screens/tax/model/tax_country.dart';
+import 'package:coding_challenge/screens/tax/models/tax_country.dart';
 import 'package:coding_challenge/screens/tax/services/tax_service.dart';
 import 'package:coding_challenge/shared/countries_constants.dart';
 import 'package:coding_challenge/shared/decorations/input_decoration.dart';
